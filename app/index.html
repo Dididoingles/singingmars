@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+
+  <meta property="og:title" content="Mars Ajudante">
+  <meta property="og:description" content="Escreva misturando os idiomas, o mars te ajuda a traduzir.">
+  <meta property="og:image" content="https://dididoingles.github.io/singingmars/assets/metashower.png">
+  <meta property="og:url" content="https://dididoingles.github.io/singingmars/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Mars ajudante">
+  <meta name="twitter:description" content="Escreva misturando os idiomas, o mars te ajuda a traduzir.">
+  <meta name="twitter:image" content="https://dididoingles.github.io/singingmars/assets/metashower.png">
+
+  <link rel="icon" type="image/webp" href="../assets/favishower.webp">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/favishower.webp">
+  <title>How to sing </title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+  <div class="app">
+    <!-- ============ HEADER ============ -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <i class="fa-solid fa-microphone-lines"></i>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Cantando com o Mars</div>
+          <div class="brand-sub" id="songTitleContainer">
+            <i class="fa-solid fa-music"></i>
+            <span class="song-title-editable" id="songTitleDisplay" contenteditable="true" spellcheck="false" title="Click to edit song title">Música</span>
+          </div>
+        </div>
+      </div>
+      
+    </header>
+
+    <!-- ============ INPUT MODE ============ -->
+    <section id="inputMode" class="input-mode">
+      <!-- Search lyrics block -->
+      <div class="search-block">
+        <span class="search-label">
+          <i class="fa-solid fa-magnifying-glass"></i> Pesquise a letra
+        </span>
+        <div class="search-row">
+          <input id="searchArtist" class="search-input" type="text"
+                 placeholder="Artista (e.g. Adele)" autocomplete="off" spellcheck="false">
+          <input id="searchTitle" class="search-input" type="text"
+                 placeholder="Música (e.g. Hello)" autocomplete="off" spellcheck="false">
+          <button id="searchLyricsBtn" class="search-btn" type="button">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i> <span>Find | Buscar</span>
+          </button>
+        </div>
+        <div id="searchFeedback" class="search-feedback"></div>
+      </div>
+
+      <div class="divider">ou cole a sua própria letra</div>
+
+      <textarea id="lyricsInput" class="lyrics-input" spellcheck="false"
+        placeholder="Cole a letra aqui…&#10;"></textarea>
+
+      <button id="goBtn" class="btn btn-primary btn-block">
+        <i class="fa-solid fa-play"></i> Start | Começar
+      </button>
+
+      <div class="hint">
+        <i class="fa-solid fa-circle-info"></i>
+        <span>Cante as palavras na ordem, a palavra seguinte aparece em roxo.</span>
+      </div>
+    </section>
+
+    <!-- ============ KARAOKE MODE ============ -->
+    <section id="karaokeMode" class="karaoke-mode" style="display:none;">
+      <div class="progress-block">
+        <div class="progress-track">
+          <div id="progressFill" class="progress-fill"></div>
+        </div>
+        <div class="progress-meta">
+          <span id="progressText">Phrase 1 of 1</span>
+          <span id="progressPercent">0%</span>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div id="phraseContext" class="stage-context"></div>
+        <div id="phraseActive" class="stage-active" aria-live="polite"></div>
+      </div>
+
+      <div class="status-bar">
+        <span id="statusDot" class="status-dot"></span>
+        <span id="statusText" class="status-text">Ready</span>
+        <button id="repeatPhraseBtn" class="hear-btn" aria-label="Listen to this phrase">
+          <i class="fa-solid fa-volume-high"></i> Hear it
+        </button>
+      </div>
+
+      <div class="speed-row">
+        <label for="speedSlider" class="speed-label">
+          <i class="fa-solid fa-gauge-simple-high"></i> Speed
+          <span id="speedValue" class="speed-value">0.85×</span>
+        </label>
+        <input type="range" id="speedSlider" class="speed-slider"
+               min="0.5" max="1.5" step="0.05" value="0.85"
+               aria-label="Playback speed">
+      </div>
+
+      <div class="nav-row">
+        <button id="prevBtn" class="nav-btn" aria-label="Previous phrase">
+          <i class="fa-solid fa-chevron-left"></i> <span>Prev</span>
+        </button>
+        <button id="micBtn" class="nav-btn primary" aria-label="Start singing this phrase">
+          <i class="fa-solid fa-microphone"></i> <span>Sing it</span>
+        </button>
+        <button id="nextBtn" class="nav-btn" aria-label="Next phrase">
+          <span>Next</span> <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+
+      <div class="footer-row">
+        <button id="resetBtn" class="btn btn-quiet">
+          <i class="fa-solid fa-arrow-rotate-left"></i> New lyrics
+        </button>
+      </div>
+    </section>
+
+    <!-- ============ COMPLETION SCREEN ============ -->
+    <section id="completionScreen" class="completion-screen">
+      <div class="completion-icon">
+        <i class="fa-solid fa-circle-check"></i>
+      </div>
+      <div class="completion-title">Song complete!</div>
+      <div class="completion-sub">Mandou bem!</div>
+      <div class="completion-song" id="completionSongName"></div>
+      <div class="completion-actions">
+        <button id="completionResetBtn" class="btn btn-primary">
+          <i class="fa-solid fa-arrow-rotate-left"></i> Cantar outra
+        </button>
+    
+      </div>
+    </section>
+  </div>
+
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <script src="js/script.js"></script>
+  
+</body>
+</html>
