@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:title" content="Mars Ajudante">
+    <meta property="og:description" content="Escreva misturando os idiomas, o mars te ajuda a traduzir.">
+    <meta property="og:image" content="https://dididoingles.github.io/singingmars/assets/metashower.png">
+    <meta property="og:url" content="https://dididoingles.github.io/singingmars/">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Mars ajudante">
+    <meta name="twitter:description" content="Escreva misturando os idiomas, o mars te ajuda a traduzir.">
+    <meta name="twitter:image" content="https://dididoingles.github.io/singingmars/assets/metashower.png">
+  
+    <link rel="icon" type="image/webp" href="assets/favishower.webp">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favishower.webp">
+    <title>Cantando com o Mars</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden; /* Prevents scrolling */
+            background-color: #e8dcfc;
+            font-family: 'Space Mono', monospace;
+            color: #352f2d;
+            line-height: 1.2;
+            letter-spacing: -2px;
+            position: relative; /* Anchor for absolute elements */
+        }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #f1f1f100; }
+::-webkit-scrollbar-thumb { background: #8b03032a; }
+::-webkit-scrollbar-thumb:hover { background: #cc0b0b21; }
+
+        /* ==========================================
+           DESKTOP LAYOUT (Absolute Positioning)
+        ========================================== */
+        
+        .video-side {
+            position: absolute;
+            top: 50%;
+            left: 20%; 
+            transform: translate(-50%, -50%);
+            width: 55%; /* Increased width slightly to give the fade more room */
+            max-width: 750px;
+            z-index: 2;
+        }
+
+        .video-wrapper {
+            width: 100%;
+            /* 1. Add padding so the mask has room to fade out */
+            padding: 40px; 
+            /* 2. Intensified fade: Solid until 40%, fully transparent by 95% */
+            -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 95%);
+            mask-image: radial-gradient(ellipse at center, black 40%, transparent 95%);
+        }
+
+        .video-wrapper video {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 20px;
+        }
+
+        .text-side {
+            position: absolute;
+            top: 50%;
+            right: 15%; 
+            transform: translateY(-50%);
+            width: 40%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            z-index: 2;
+        }
+
+        /* Typography */
+        h1.title {
+            font-family: 'Fraunces', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: #5d3b8a;
+            white-space: nowrap;
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+
+        p.subtitle {
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: #352f2d;
+            text-align: left;
+            margin-bottom: 20px;
+            text-wrap: pretty;
+            max-width: 90%;
+            line-height: 1.2;
+            letter-spacing: -1px;
+        }
+
+
+        .start-btn {
+            display: inline-block;
+            background-color: #763daa;
+            color: #ffffff;
+            font-family: 'Fraunces', serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-decoration: none;
+            padding: 16px 150px;
+            border-radius: 10px;
+            border: 2px solid #222222;
+            margin-top: 40px;
+            align-self: flex-start;
+            transition: transform 0.2s, background 0.2s;
+            letter-spacing: 0px;
+            box-shadow: 2px 3px 0 rgba(34,34,34,0.85);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.2s ease;
+        }
+
+        .start-btn:hover {
+            background-color: #8911cf94;
+            transform: translateY(2px) translateX(2px);
+            box-shadow: 1px 2px 0 rgba(34,34,34,0.85);
+        }
+
+        .start-btn:active { 
+            transform: translateY(3px) translateX(2px);
+            box-shadow: 0px 0px 0 rgba(34,34,34,0.85);
+        }
+
+        /* Cascade Animation */
+        @keyframes smoothLoad {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1.title { animation: smoothLoad 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s both; }
+        p.subtitle { animation: smoothLoad 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.4s both; }
+        .notice { animation: smoothLoad 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.6s both; }
+        .start-btn { animation: smoothLoad 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.8s both; }
+
+        /* ==========================================
+           FLOATING LAVENDER MUSIC ICONS
+        ========================================== */
+        .floating-notes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .note {
+            position: absolute;
+            font-size: 2.4rem;
+            color: #b48be649;
+            opacity: 0.75;
+            text-shadow: 0 0 8px rgba(180, 139, 230, 0.103);
+            animation: floatUp 16s linear infinite;
+            user-select: none;
+            filter: drop-shadow(0 2px 3px rgba(90, 50, 140, 0.2));
+        }
+
+        /* Icon variations */
+        .note[data-icon="♪"] { font-size: 2.8rem; }
+        .note[data-icon="♫"] { font-size: 2.2rem; }
+        .note[data-icon="♬"] { font-size: 3rem; }
+        .note[data-icon="𝄞"] { font-size: 3.4rem; }
+        .note[data-icon="♩"] { font-size: 2rem; }
+        .note[data-icon="🎵"] { font-size: 2.6rem; opacity: 0.65; }
+        .note[data-icon="🎶"] { font-size: 2.2rem; opacity: 0.7; }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(110vh) rotate(0deg) scale(0.9);
+                opacity: 0;
+            }
+            8% {
+                opacity: 0.7;
+            }
+            50% {
+                transform: translateY(50vh) rotate(8deg) scale(1.05);
+                opacity: 0.85;
+            }
+            92% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-20vh) rotate(-6deg) scale(1.0);
+                opacity: 0;
+            }
+        }
+
+        /* Staggered delays & positions for variety */
+        .note:nth-child(1)  { left: 4%;  animation-duration: 18s; animation-delay: 0s; }
+        .note:nth-child(2)  { left: 11%; animation-duration: 14s; animation-delay: 2s; }
+        .note:nth-child(3)  { left: 18%; animation-duration: 20s; animation-delay: 5s; }
+        .note:nth-child(4)  { left: 26%; animation-duration: 16s; animation-delay: 1s; }
+        .note:nth-child(5)  { left: 33%; animation-duration: 22s; animation-delay: 7s; }
+        .note:nth-child(6)  { left: 41%; animation-duration: 13s; animation-delay: 3s; }
+        .note:nth-child(7)  { left: 49%; animation-duration: 19s; animation-delay: 9s; }
+        .note:nth-child(8)  { left: 56%; animation-duration: 15s; animation-delay: 4s; }
+        .note:nth-child(9)  { left: 63%; animation-duration: 21s; animation-delay: 6s; }
+        .note:nth-child(10) { left: 70%; animation-duration: 17s; animation-delay: 0.5s; }
+        .note:nth-child(11) { left: 77%; animation-duration: 24s; animation-delay: 8s; }
+        .note:nth-child(12) { left: 84%; animation-duration: 12s; animation-delay: 2.5s; }
+        .note:nth-child(13) { left: 91%; animation-duration: 20s; animation-delay: 10s; }
+        .note:nth-child(14) { left: 96%; animation-duration: 16s; animation-delay: 1.5s; }
+        .note:nth-child(15) { left: 7%;  animation-duration: 18s; animation-delay: 12s; }
+        .note:nth-child(16) { left: 23%; animation-duration: 14s; animation-delay: 11s; }
+        .note:nth-child(17) { left: 44%; animation-duration: 25s; animation-delay: 13s; }
+        .note:nth-child(18) { left: 68%; animation-duration: 19s; animation-delay: 3.5s; }
+        .note:nth-child(19) { left: 88%; animation-duration: 15s; animation-delay: 14s; }
+        .note:nth-child(20) { left: 52%; animation-duration: 22s; animation-delay: 6.5s; }
+
+        /* ==========================================
+           MOBILE & TABLET LAYOUT (Absolute Positioning)
+        ========================================== */
+        @media (max-width: 1024px) {
+            html, body {
+                overflow: auto; 
+            }
+
+            .video-side {
+                position: relative;
+                top: auto;
+                left: auto;
+                transform: none;
+                width: 100%;
+                margin: 50px auto 0 auto;
+                padding: 0 20px;
+            }
+
+            .video-wrapper {
+                max-width: 450px; 
+                margin: 0 auto;
+                padding: 0px; /* Smaller padding for mobile */
+                /* Intensified fade for mobile */
+                -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 95%);
+                mask-image: radial-gradient(ellipse at center, black 40%, transparent 95%);
+            }
+
+            .text-side {
+                position: relative;
+                top: auto;
+                right: auto;
+                transform: none;
+                width: 100%;
+                max-width: 100%;
+                padding: 0 24px;
+                margin-top: 10px; 
+                align-items: center;
+                text-align: center;
+            }
+
+            h1.title {
+                font-size: 2.5rem;
+                white-space: normal;
+                margin-bottom: 15px;
+                text-align: center;
+            }
+
+            p.subtitle {
+                font-size: 0.9rem;
+                max-width: 100%;
+                text-align: center;
+                margin-bottom: 25px;
+            }
+
+            .notice {
+                font-size: 0.7rem;
+                text-align: left;
+                width: 100%;
+            }
+
+            .start-btn {
+                width: 100%;
+                text-align: center;
+                margin-top: 25px;
+                align-self: center;
+                padding: 16px 100px; 
+            }
+
+            /* Make notes a bit smaller on mobile */
+            .note { font-size: 1.8rem !important; }
+            .note[data-icon="𝄞"] { font-size: 2.4rem !important; }
+        }
+        
+        @media (max-width: 480px) {
+            h1.title { font-size: 2.2rem; }
+            .start-btn {
+                width: 100%;
+                text-align: center;
+                margin-top: 25px;
+                align-self: center;
+                padding: 16px 60px; 
+            }
+            .note { font-size: 1.5rem !important; }
+            .note[data-icon="𝄞"] { font-size: 2rem !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating Lavender Music Icons -->
+    <div class="floating-notes" aria-hidden="true">
+        <span class="note" data-icon="♪">♪</span>
+        <span class="note" data-icon="♫">♫</span>
+        <span class="note" data-icon="♬">♬</span>
+        <span class="note" data-icon="𝄞">𝄞</span>
+        <span class="note" data-icon="♩">♩</span>
+        <span class="note" data-icon="🎵">🎵</span>
+        <span class="note" data-icon="🎶">🎶</span>
+        <span class="note" data-icon="♪">♪</span>
+        <span class="note" data-icon="♫">♫</span>
+        <span class="note" data-icon="♬">♬</span>
+        <span class="note" data-icon="♩">♩</span>
+        <span class="note" data-icon="𝄞">𝄞</span>
+        <span class="note" data-icon="🎵">🎵</span>
+        <span class="note" data-icon="♫">♫</span>
+        <span class="note" data-icon="🎶">🎶</span>
+        <span class="note" data-icon="♪">♪</span>
+        <span class="note" data-icon="♬">♬</span>
+        <span class="note" data-icon="♩">♩</span>
+        <span class="note" data-icon="𝄞">𝄞</span>
+        <span class="note" data-icon="🎵">🎵</span>
+    </div>
+
+    <!-- Video -->
+    <div class="video-side">
+        <div class="video-wrapper">
+            <video 
+                src="https://dididoingles.github.io/LanguageLab/marsshower.mp4" 
+                autoplay 
+                muted 
+                playsinline 
+                disablepictureinpicture 
+                controlsList="nodownload noplaybackrate"
+                id="splashVideo">
+            </video>
+        </div>
+    </div>
+
+    <!-- Text Content -->
+    <div class="text-side">
+        <h1 class="title">Cantando com o Mars</h1>
+        
+        <p class="subtitle">
+            Finja que está no chuveiro e aprenda a cantar as suas músicas favoritas em Inglês com o Mars.
+        </p>
+
+       
+
+        <a href="app/" class="start-btn">Comece a aprender</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const video = document.getElementById('splashVideo');
+            if (video) {
+                video.play().catch(error => {
+                    console.log("Autoplay was prevented by the browser:", error);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
